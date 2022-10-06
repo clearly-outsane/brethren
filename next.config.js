@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('next').NextConfig} */
-module.exports = {
+
+const nextConfig = {
   eslint: {
     dirs: ['src'],
   },
@@ -12,6 +14,13 @@ module.exports = {
   //     'res.cloudinary.com',
   //   ],
   // },
+  typescript: {
+    // !! WARN !!
+    ignoreBuildErrors: true,
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV !== 'development',
+  },
 
   // SVGR
   webpack(config) {
@@ -28,7 +37,18 @@ module.exports = {
         },
       ],
     });
+    config.module.rules.push({
+      test: /\.(glsl|vs|fs|vert|frag)$/,
+      use: ['raw-loader', 'glslify-loader'],
+    });
 
     return config;
   },
+};
+
+module.exports = () => {
+  const plugins = [];
+  return plugins.reduce((acc, plugin) => plugin(acc), {
+    ...nextConfig,
+  });
 };
