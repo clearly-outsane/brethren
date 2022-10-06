@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useFrame, useLayoutEffect } from '@studio-freight/hamo';
-import Lenis from '@studio-freight/lenis';
+const { useFrame, useLayoutEffect } = require('@studio-freight/hamo');
+const Lenis = require('@studio-freight/lenis');
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 

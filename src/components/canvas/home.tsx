@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useFrame as useRaf } from '@studio-freight/hamo';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { useFrame: useRaf } = require('@studio-freight/hamo');
 import { Suspense, useEffect, useMemo, useRef } from 'react';
 import { Color, MathUtils, Vector2 } from 'three';
 
