@@ -14,6 +14,10 @@ const nextConfig = {
   //     'res.cloudinary.com',
   //   ],
   // },
+  typescript: {
+    // !! WARN !!
+    ignoreBuildErrors: true,
+  },
   compiler: {
     removeConsole: process.env.NODE_ENV !== 'development',
   },
