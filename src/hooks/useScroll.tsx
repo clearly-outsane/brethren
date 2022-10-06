@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import useBoundStore from '@/lib/store';
 
 export function useScroll(callback, deps = []) {
-  const lenis = useBoundStore(({ lenis }) => lenis);
+  const lenis = useBoundStore(({ lenis }: { lenis: any }) => lenis);
 
   useEffect(() => {
     if (!lenis) return;
