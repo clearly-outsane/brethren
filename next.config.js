@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('next').NextConfig} */
-module.exports = {
+
+const nextConfig = {
   eslint: {
     dirs: ['src'],
   },
@@ -38,4 +40,11 @@ module.exports = {
 
     return config;
   },
+};
+
+module.exports = () => {
+  const plugins = [];
+  return plugins.reduce((acc, plugin) => plugin(acc), {
+    ...nextConfig,
+  });
 };

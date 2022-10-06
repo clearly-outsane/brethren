@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { useFrame: useRaf } = require('@studio-freight/hamo');
+import { useFrame as useRaf } from '@studio-freight/hamo';
 import { Suspense, useEffect, useMemo, useRef } from 'react';
 import { Color, MathUtils, Vector2 } from 'three';
 
@@ -13,7 +12,7 @@ import vertexShader from './particles/vertex.glsl';
 function Raf({ render = true }) {
   const { advance } = useThree();
 
-  useRaf((time: any) => {
+  useRaf((time) => {
     if (render) {
       advance(time / 1000);
     }
