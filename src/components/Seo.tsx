@@ -3,12 +3,12 @@ import { useRouter } from 'next/router';
 
 // !STARTERCONF Change these default meta
 const defaultMeta = {
-  title: 'Next.js + Tailwind CSS + TypeScript Starter',
-  siteName: 'Next.js + Tailwind CSS + TypeScript Starter',
+  title: 'Brethren',
+  siteName: 'Brethren Design Agency',
   description:
-    'A starter for Next.js, Tailwind CSS, and TypeScript with Absolute Import, Seo, Link component, pre-configured with Husky',
+    'Branding and design agency helping you create an experience people love.',
   /** Without additional '/' on the end, e.g. https://theodorusclarence.com */
-  url: 'https://tsnext-tw.thcl.dev',
+  url: 'https://brethren-new.vercel.app',
   type: 'website',
   robots: 'follow, index',
   /**
@@ -99,7 +99,7 @@ type Favicons = {
   type?: string;
 };
 
-// !STARTERCONF this is the default favicon, you can generate your own from https://www.favicon-generator.org/ then replace the whole /public/favicon folder
+// done- !STARTERCONF this is the default favicon, you can generate your own from https://www.favicon-generator.org/ then replace the whole /public/favicon folder
 const favicons: Array<Favicons> = [
   {
     rel: 'apple-touch-icon',

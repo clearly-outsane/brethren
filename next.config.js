@@ -12,6 +12,9 @@ module.exports = {
   //     'res.cloudinary.com',
   //   ],
   // },
+  compiler: {
+    removeConsole: process.env.NODE_ENV !== 'development',
+  },
 
   // SVGR
   webpack(config) {
@@ -27,6 +30,10 @@ module.exports = {
           },
         },
       ],
+    });
+    config.module.rules.push({
+      test: /\.(glsl|vs|fs|vert|frag)$/,
+      use: ['raw-loader', 'glslify-loader'],
     });
 
     return config;
