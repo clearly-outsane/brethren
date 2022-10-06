@@ -10,8 +10,8 @@ import useBoundStore from '@/lib/store';
 
 type LayoutType = {
   children: React.ReactNode;
-  className: string;
-  theme: 'light' | 'dark';
+  className?: string;
+  theme?: 'light' | 'dark';
 };
 
 export default function Layout({
