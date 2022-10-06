@@ -8,18 +8,12 @@ import { useState } from 'react';
 import clsxm from '@/lib/clsxm';
 import useBoundStore from '@/lib/store';
 
-type LayoutType = {
-  children: React.ReactNode;
-  className?: string;
-  theme?: 'light' | 'dark';
-};
-
 export default function Layout({
   children,
   // eslint-disable-next-line unused-imports/no-unused-vars
   theme = 'light',
   className,
-}: LayoutType) {
+}) {
   const [lenis, setLenis] = useBoundStore((state) => [
     state.lenis,
     state.setLenis,
@@ -83,7 +77,7 @@ export default function Layout({
 
   useLayoutEffect(() => {
     // catch anchor links clicks
-    function onClick(e: any) {
+    function onClick(e) {
       e.preventDefault();
       const node = e.currentTarget;
       const hash = node.href.split('#').pop();
@@ -108,7 +102,7 @@ export default function Layout({
     };
   }, []);
 
-  useFrame((time: any) => {
+  useFrame((time) => {
     lenis?.raf(time);
   }, []);
 
