@@ -25,8 +25,8 @@ export default function Layout({
     // if (isTouchDevice === undefined) return
     window.scrollTo(0, 0);
     const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+      duration: 1.3,
+      easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -9 * t)),
       direction: 'vertical',
       gestureDirection: 'vertical',
       smooth: true,

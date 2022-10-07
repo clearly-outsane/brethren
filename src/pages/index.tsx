@@ -1,6 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable unused-imports/no-unused-vars */
+import { useRect } from '@studio-freight/hamo';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { BsArrowDown } from 'react-icons/bs';
+import { useWindowSize } from 'react-use';
+
+import useBoundStore from '@/lib/store';
 
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
@@ -23,6 +29,10 @@ const WebGL = dynamic(
 // to customize the default configuration.
 
 export default function HomePage() {
+  const { height: windowHeight } = useWindowSize();
+  const addThreshold = useBoundStore(({ addThreshold }) => addThreshold);
+  const [section2Ref, section2] = useRect();
+
   const WhatWeDoCard = ({
     title,
     number,
@@ -42,6 +52,11 @@ export default function HomePage() {
       </div>
     );
   };
+
+  React.useEffect(() => {
+    const top = section2.top;
+    addThreshold({ id: 'who-we-are', value: top });
+  }, [section2]);
 
   return (
     <Layout>
@@ -64,7 +79,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className='relative text-white'>
+        <section className='relative text-white' ref={section2Ref}>
           <div className='container mx-auto flex min-h-screen flex-col items-center justify-center px-5 lg:items-start lg:px-0'>
             <span className='text-[12px] uppercase tracking-[0.2em] lg:text-[14px]'>
               Branding + digital
