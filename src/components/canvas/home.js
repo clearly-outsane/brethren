@@ -3,13 +3,15 @@
 import {
   Billboard,
   Environment,
+  Float,
   Lightformer,
   Preload,
   shaderMaterial,
+  useGLTF,
 } from '@react-three/drei';
 import { Canvas, extend, useFrame, useThree } from '@react-three/fiber';
 import { useFrame as useRaf } from '@studio-freight/hamo';
-import { Suspense, useMemo, useRef } from 'react';
+import { Suspense, useMemo, useRef, useState } from 'react';
 import { MathUtils, UniformsLib } from 'three';
 import * as THREE from 'three';
 import CustomShaderMaterial from 'three-custom-shader-material';
@@ -74,6 +76,61 @@ const ScrollGroup = ({ children }) => {
   return <group ref={groupRef}>{children}</group>;
 };
 
+function Statue({ ...props }) {
+  const { nodes, _ } = useGLTF('/models/Statue.glb');
+  const { materials } = useGLTF('/models/LetterB.glb');
+  const group = useRef();
+  const [speed] = useState(() => 0.15 + Math.random() / 10);
+  return (
+    <>
+      <group ref={group} {...props} dispose={null}>
+        <Float
+          position={[1, 0, -1]}
+          speed={speed}
+          rotationIntensity={1}
+          floatIntensity={20}
+          dispose={null}
+        >
+          <mesh
+            geometry={nodes.Mesh_0001.geometry}
+            material={materials.Material_0}
+            position={[0, 0.39, 0]}
+          />
+        </Float>
+      </group>
+    </>
+  );
+}
+
+function Cube({ ...props }) {
+  const { nodes, _ } = useGLTF('/models/cube.glb');
+  const { materials } = useGLTF('/models/LetterB.glb');
+  const group = useRef();
+  const [speed] = useState(() => 0.15 + Math.random() / 10);
+  return (
+    <>
+      <group ref={group} {...props} dispose={null}>
+        <Float
+          position={[1, 0, -1]}
+          speed={speed}
+          rotationIntensity={10}
+          floatIntensity={1}
+          dispose={null}
+        >
+          <mesh
+            geometry={nodes.Cube.geometry}
+            material={materials.Material_0}
+            position={[0, 2, -0.01]}
+            rotation={[Math.PI / 4, 0, 0]}
+            scale={10}
+          />
+        </Float>
+      </group>
+    </>
+  );
+}
+useGLTF.preload('/models/cube.glb');
+
 const Content = ({ easing = (x) => Math.sqrt(1 - Math.pow(x - 1, 2)) }) => {
   const sphereCount = 20;
   const sphereDepth = 80;
@@ -95,6 +152,7 @@ const Content = ({ easing = (x) => Math.sqrt(1 - Math.pow(x - 1, 2)) }) => {
   });
 
   useScroll(({ scroll }) => {
+    //? thresholds here is sorted by which one comes first from the top but if you want a specific one use _thresholds["section-name"]
     const progressForFloor = mapRange(
       thresholds[0] / 3,
       thresholds[0],
@@ -103,18 +161,34 @@ const Content = ({ easing = (x) => Math.sqrt(1 - Math.pow(x - 1, 2)) }) => {
       1
     );
     const progressForBackground = mapRange(
-      (thresholds[0] * 3) / 4,
+      (thresholds[0] * 2) / 3,
       thresholds[0],
       scroll,
       0,
       1
     );
+
+    const endProgressForBackground = mapRange(
+      thresholds[0] + 40,
+      thresholds[0] * 1.5,
+      scroll,
+      1,
+      0
+    );
+
     if (groundRef.current.material) {
       groundRef.current.material.opacity = 1 - progressForFloor;
     }
     if (billboardRef.current.material) {
-      billboardRef.current.material.uniforms.uGrayMix.value =
-        1 - progressForBackground;
+      if (scroll < thresholds[0]) {
+        billboardRef.current.material.uniforms.uGrayMix.value =
+          1 - progressForBackground;
+      } else if (thresholds[0] < scroll < thresholds[1]) {
+        billboardRef.current.material.uniforms.uGrayMix.value =
+          1 - endProgressForBackground;
+      } else {
+        billboardRef.current.material.uniforms.uGrayMix.value = 1;
+      }
     }
   });
 
@@ -122,7 +196,6 @@ const Content = ({ easing = (x) => Math.sqrt(1 - Math.pow(x - 1, 2)) }) => {
     <>
       <axesHelper />
       {/* <OrbitControls makeDefault /> */}
-
       <pointLight
         position={[-2.67, 2.3, 2.5]}
         intensity={2}
@@ -132,7 +205,6 @@ const Content = ({ easing = (x) => Math.sqrt(1 - Math.pow(x - 1, 2)) }) => {
         castShadow={true}
         shadow-radius={50}
       />
-
       <pointLight
         position={[4, 8, -5]}
         intensity={1}
@@ -173,23 +245,15 @@ const Content = ({ easing = (x) => Math.sqrt(1 - Math.pow(x - 1, 2)) }) => {
             />
           ))}
         </group>
+
+        <Statue
+          scale={1.2}
+          rotation={[0, Math.PI, 0]}
+          position={[-22, 0, 38]}
+        />
+
+        <Cube scale={2.5} position={[-48, 0, 42]} />
       </ScrollGroup>
-      <Billboard
-        follow={true}
-        lockX={false}
-        lockY={false}
-        lockZ={false}
-        position={[-10, 0, 10]}
-      >
-        <mesh ref={billboardRef} scale={[width * 2, height * 2, 1]}>
-          <planeGeometry args={[1, 1, 16, 16]} />
-          <colorShiftMaterial
-            key={ColorShiftMaterial.key}
-            side={THREE.DoubleSide}
-            transparent
-          />
-        </mesh>
-      </Billboard>
       <mesh
         ref={groundRef}
         position={[0, 0, 0]}
@@ -217,6 +281,22 @@ const Content = ({ easing = (x) => Math.sqrt(1 - Math.pow(x - 1, 2)) }) => {
           transparent
         />
       </mesh>
+      <Billboard
+        follow={true}
+        lockX={false}
+        lockY={false}
+        lockZ={false}
+        position={[-9, 0, 9]}
+      >
+        <mesh ref={billboardRef} scale={[width * 1, height * 1.2, 1]}>
+          <planeGeometry args={[1, 1, 16, 16]} />
+          <colorShiftMaterial
+            key={ColorShiftMaterial.key}
+            side={THREE.DoubleSide}
+            transparent
+          />
+        </mesh>
+      </Billboard>
     </>
   );
 };

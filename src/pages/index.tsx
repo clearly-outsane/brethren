@@ -2,6 +2,7 @@
 /* eslint-disable unused-imports/no-unused-vars */
 import { useRect } from '@studio-freight/hamo';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import * as React from 'react';
 import { BsArrowDown } from 'react-icons/bs';
 import { useWindowSize } from 'react-use';
@@ -32,6 +33,7 @@ export default function HomePage() {
   const { height: windowHeight } = useWindowSize();
   const addThreshold = useBoundStore(({ addThreshold }) => addThreshold);
   const [section2Ref, section2] = useRect();
+  const [section3Ref, section3] = useRect();
 
   const WhatWeDoCard = ({
     title,
@@ -53,10 +55,48 @@ export default function HomePage() {
     );
   };
 
+  const ProjectCard = ({
+    src,
+    title,
+    year,
+    desc,
+  }: {
+    src: string;
+    title: string;
+    year: number | string;
+    desc: string;
+  }) => {
+    return (
+      <div className='flex w-full max-w-[546px] flex-col'>
+        <div className=' relative aspect-[0.87] h-full w-full'>
+          <Image
+            layout='fill'
+            objectFit='cover'
+            src={src}
+            alt='Project Image'
+            quality={90}
+          />
+        </div>
+        <div className=' mt-6 flex w-full flex-col'>
+          <div className=' flex w-full items-end justify-between'>
+            <div className='text-[24px]'>{title}</div>
+            <div className='text-[14px]'> {year}</div>
+          </div>
+          <div className='mt-2 text-[16px] text-[#797a7d]'>{desc}</div>
+        </div>
+      </div>
+    );
+  };
+
   React.useEffect(() => {
     const top = section2.top;
     addThreshold({ id: 'who-we-are', value: top });
   }, [section2]);
+
+  React.useEffect(() => {
+    const top = section3.top;
+    addThreshold({ id: 'work', value: top });
+  }, [section3]);
 
   return (
     <Layout>
@@ -110,6 +150,61 @@ export default function HomePage() {
               />
             </div>
             <span className='mt-12'>Plan a Project</span>
+          </div>
+        </section>
+
+        <section className='relative text-white' ref={section3Ref}>
+          <div className='container mx-auto flex min-h-[300vh] flex-col items-center px-5 lg:px-0'>
+            <h1 className='z-[1] max-w-[998px] text-center text-[clamp(2.5em,5vw,5.625em)]'>
+              Let&apos;s create something that you love!
+            </h1>
+            <div className='mt-14 flex w-full flex-col items-center lg:mt-0'>
+              <div className='flex w-full max-w-[1124px] flex-col gap-14 lg:-mt-14 lg:flex-row lg:gap-0'>
+                <div className='lg:basis-1/2'>
+                  <ProjectCard
+                    src='/images/clarity_cooperative/thumb.jpg'
+                    title='Clarity Cooperative'
+                    year={2021}
+                    desc='Branding, UX/UI Design, Web Development , +3 More'
+                  />
+                </div>
+                <div className='lg:mt-48 lg:basis-1/2'>
+                  <ProjectCard
+                    src='/images/simply_get_away/thumb.jpg'
+                    title='Simply Get Away'
+                    year={2021}
+                    desc='Branding, UX/UI Design, Web Development'
+                  />
+                </div>
+              </div>
+              <div className='my-14 w-full max-w-[546px]'>
+                <ProjectCard
+                  src='/images/elf_creek_games/thumb.jpg'
+                  title='Elf Creek Games'
+                  year={2021}
+                  desc='Branding, UX/UI Design, Web Development, +1 More'
+                />
+              </div>
+              <div className='flex w-full max-w-[1124px] flex-col gap-14  lg:flex-row lg:gap-0'>
+                <div className='lg:basis-1/2'>
+                  <ProjectCard
+                    src='/images/clarity_therapy/thumb.jpg'
+                    title='Clarity Therapy NYC'
+                    year={2021}
+                    desc='Branding, UX/UI Design, Web Development  (+5 More)'
+                  />
+                </div>
+                <div className='lg:mt-48 lg:basis-1/2'>
+                  <ProjectCard
+                    src='/images/effective_agents/thumb.jpg'
+                    title='Effective Agents'
+                    year={2021}
+                    desc='UX/UI Design, Web Development, Photography'
+                  />
+                </div>
+              </div>
+            </div>
+            <div className='mt-14 mb-20 lg:mb-28'>View all work</div>
           </div>
         </section>
       </main>
