@@ -207,7 +207,7 @@ const Content = ({ easing = (x) => Math.sqrt(1 - Math.pow(x - 1, 2)) }) => {
 
   return (
     <>
-      <axesHelper />
+      {/* <axesHelper /> */}
       {/* <OrbitControls makeDefault /> */}
       <pointLight
         position={[-2.67, 2.3, 2.5]}
