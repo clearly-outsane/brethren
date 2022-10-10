@@ -111,7 +111,6 @@ function Cube({ ...props }) {
     <>
       <group ref={group} {...props} dispose={null}>
         <Float
-          position={[1, 0, -1]}
           speed={speed}
           rotationIntensity={10}
           floatIntensity={1}
@@ -120,7 +119,7 @@ function Cube({ ...props }) {
           <mesh
             geometry={nodes.Cube.geometry}
             material={materials.Material_0}
-            position={[0, 2, -0.01]}
+            position={[0, 0, 0]}
             rotation={[Math.PI / 4, 0, 0]}
             scale={10}
           />
@@ -137,7 +136,7 @@ const Content = ({ easing = (x) => Math.sqrt(1 - Math.pow(x - 1, 2)) }) => {
   const bRef = useRef(null);
   const groundRef = useRef(null);
   const billboardRef = useRef(null);
-  const { width, height } = useThree((state) => state.viewport);
+  const { viewport, size } = useThree();
 
   const _thresholds = useBoundStore(({ thresholds }) => thresholds);
   const thresholds = useMemo(() => {
@@ -169,23 +168,37 @@ const Content = ({ easing = (x) => Math.sqrt(1 - Math.pow(x - 1, 2)) }) => {
     );
 
     const endProgressForBackground = mapRange(
-      thresholds[0] + 40,
+      thresholds[0],
       thresholds[0] * 1.5,
       scroll,
       1,
       0
     );
 
+    const progressForBackground2 = mapRange(
+      thresholds[2] - size.height / 2,
+      thresholds[2] - 124,
+      scroll,
+      0,
+      1
+    );
+
     if (groundRef.current.material) {
       groundRef.current.material.opacity = 1 - progressForFloor;
     }
+
     if (billboardRef.current.material) {
       if (scroll < thresholds[0]) {
         billboardRef.current.material.uniforms.uGrayMix.value =
           1 - progressForBackground;
-      } else if (thresholds[0] < scroll < thresholds[1]) {
+      } else if (thresholds[0] < scroll && scroll < thresholds[1]) {
         billboardRef.current.material.uniforms.uGrayMix.value =
           1 - endProgressForBackground;
+      } else if (thresholds[2] - size.height < scroll) {
+        billboardRef.current.material.uniforms.uGrayMix.value = Math.max(
+          0,
+          1 - progressForBackground2
+        );
       } else {
         billboardRef.current.material.uniforms.uGrayMix.value = 1;
       }
@@ -252,7 +265,7 @@ const Content = ({ easing = (x) => Math.sqrt(1 - Math.pow(x - 1, 2)) }) => {
           position={[-22, 0, 38]}
         />
 
-        <Cube scale={2.5} position={[-48, 0, 42]} />
+        <Cube scale={3.2} position={[-44, -4, 36]} />
       </ScrollGroup>
       <mesh
         ref={groundRef}
@@ -288,7 +301,10 @@ const Content = ({ easing = (x) => Math.sqrt(1 - Math.pow(x - 1, 2)) }) => {
         lockZ={false}
         position={[-9, 0, 9]}
       >
-        <mesh ref={billboardRef} scale={[width * 1, height * 1.2, 1]}>
+        <mesh
+          ref={billboardRef}
+          scale={[viewport.width * 1, viewport.height * 1.2, 1]}
+        >
           <planeGeometry args={[1, 1, 16, 16]} />
           <colorShiftMaterial
             key={ColorShiftMaterial.key}
