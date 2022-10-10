@@ -183,7 +183,7 @@ export default function HomePage() {
         </section>
 
         <section className='relative text-white' ref={section3Ref}>
-          <div className='container mx-auto flex min-h-[300vh] flex-col items-center px-5 lg:px-0'>
+          <div className='container mx-auto flex min-h-screen flex-col items-center px-5 lg:px-0'>
             <h1 className='z-[1] max-w-[998px] text-center text-[clamp(2.5em,5vw,5.625em)]'>
               Let&apos;s create something that you love!
             </h1>
@@ -238,7 +238,7 @@ export default function HomePage() {
         </section>
 
         <section className='relative text-white' ref={section4Ref}>
-          <div className='container mx-auto mt-32 flex min-h-[150vh] flex-col items-center px-5 lg:px-0'>
+          <div className='container mx-auto mt-32 mb-24 flex min-h-screen flex-col items-center px-5 lg:px-0'>
             <div className=' flex w-full items-stretch '>
               <div className=' lg:basis-1/2'>
                 <div className=' flex flex-col'>
