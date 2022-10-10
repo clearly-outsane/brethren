@@ -1,16 +1,18 @@
 import create, { StateCreator } from 'zustand';
 
-interface ScrollSlice {
+interface CanvasSlice {
   thresholds: { [x: string]: unknown };
   addThreshold: (props: unknown) => void;
   lenis: unknown;
   setLenis: (lenis: unknown) => void;
+  router: any;
+  dom: any;
 }
-const createScrollSlice: StateCreator<
-  ScrollSlice,
-  [['zustand/persist', ScrollSlice | unknown]],
+const createCanvasSlice: StateCreator<
+  CanvasSlice,
+  [['zustand/persist', CanvasSlice | unknown]],
   [],
-  ScrollSlice
+  CanvasSlice
 > = (set, get) => ({
   thresholds: {},
   addThreshold: ({ id, value }) => {
@@ -22,8 +24,8 @@ const createScrollSlice: StateCreator<
   setLenis: (lenis) => set({ lenis }),
 });
 
-const useBoundStore = create<ScrollSlice>()((...a) => ({
-  ...createScrollSlice(...a),
+const useBoundStore = create<CanvasSlice>()((...a) => ({
+  ...createCanvasSlice(...a),
 }));
 
 export default useBoundStore;
