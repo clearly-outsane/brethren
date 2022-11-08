@@ -12,6 +12,7 @@ import {
 import { Canvas, extend, useFrame, useThree } from '@react-three/fiber';
 import { useFrame as useRaf } from '@studio-freight/hamo';
 import { Suspense, useMemo, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { MathUtils, UniformsLib } from 'three';
 import * as THREE from 'three';
 import CustomShaderMaterial from 'three-custom-shader-material';
@@ -20,10 +21,10 @@ import { mapRange } from '@/lib/maths';
 import useBoundStore from '@/lib/store';
 import { useScroll } from '@/hooks/useScroll';
 
-import fColorShift from './colorshift/shader.frag';
-import vColorShift from './colorshift/shader.vert';
 import LetterB from './models/LetterB';
 import Sphere from './models/Sphere';
+import fColorShift from './shaders/colorshift/shader.frag';
+import vColorShift from './shaders/colorshift/shader.vert';
 
 function Raf({ render = true }) {
   const { advance } = useThree();
@@ -136,12 +137,30 @@ const Content = ({ easing = (x) => Math.sqrt(1 - Math.pow(x - 1, 2)) }) => {
   const bRef = useRef(null);
   const groundRef = useRef(null);
   const billboardRef = useRef(null);
+  const pointLights = useRef(null);
   const { viewport, size } = useThree();
 
   const _thresholds = useBoundStore(({ thresholds }) => thresholds);
   const thresholds = useMemo(() => {
     return Object.values(_thresholds).sort((a, b) => a - b);
   }, [_thresholds]);
+
+  useEffect(() => {
+    if (bRef?.current && pointLights?.current) {
+      if (size.width >= 1024) {
+        bRef.current.position.x = 0;
+        bRef.current.rotation.y = -Math.PI / 2.5;
+        bRef.current.scale.setScalar(1.2);
+        pointLights.current.position.x = 0;
+      } else {
+        //mobile styling
+        bRef.current.position.x = 5.5;
+        bRef.current.rotation.y = -Math.PI / 2.3;
+        bRef.current.scale.setScalar(1);
+        pointLights.current.position.x = 6;
+      }
+    }
+  }, [size]);
 
   useFrame((state, delta) => {
     if (billboardRef.current.material) {
@@ -207,36 +226,38 @@ const Content = ({ easing = (x) => Math.sqrt(1 - Math.pow(x - 1, 2)) }) => {
 
   return (
     <>
-      {/* <axesHelper /> */}
+      <axesHelper />
       {/* <OrbitControls makeDefault /> */}
-      <pointLight
-        position={[-2.67, 2.3, 2.5]}
-        intensity={2}
-        color='#3BCAF7'
-        distance={33}
-        decay={1}
-        castShadow={true}
-        shadow-radius={50}
-      />
-      <pointLight
-        position={[4, 8, -5]}
-        intensity={1}
-        color='#FEB548'
-        distance={23}
-        decay={1}
-        castShadow={true}
-        shadow-radius={50}
-        shadow-bias={0.0}
-      />
-      <pointLight
-        position={[-4, 8, -4]}
-        intensity={1.5}
-        color='#FF00EA'
-        distance={14}
-        decay={1}
-        castShadow={true}
-        shadow-radius={50}
-      />
+      <group ref={pointLights}>
+        <pointLight
+          position={[-2.67, 2.3, 2.5]}
+          intensity={2}
+          color='#3BCAF7'
+          distance={33}
+          decay={1}
+          castShadow={true}
+          shadow-radius={50}
+        />
+        <pointLight
+          position={[4, 8, -5]}
+          intensity={1}
+          color='#FEB548'
+          distance={23}
+          decay={1}
+          castShadow={true}
+          shadow-radius={50}
+          shadow-bias={0.0}
+        />
+        <pointLight
+          position={[-4, 8, -4]}
+          intensity={1.5}
+          color='#FF00EA'
+          distance={14}
+          decay={1}
+          castShadow={true}
+          shadow-radius={50}
+        />
+      </group>
       <Environment frames={Infinity} resolution={256}>
         <Lightformer
           form='circle'
@@ -248,14 +269,10 @@ const Content = ({ easing = (x) => Math.sqrt(1 - Math.pow(x - 1, 2)) }) => {
         />
       </Environment>
       <ScrollGroup>
-        <LetterB ref={bRef} />
+        <LetterB ref={bRef} position={[-7, 0, 2]} />
         <group position={[-17, 0, 17]} rotation={[0, -Math.PI / 4, 0]}>
           {Array.from({ length: sphereCount }, (_, i) => (
-            <Sphere
-              key={i}
-              index={i}
-              z={Math.round(easing(i / sphereCount) * sphereDepth)}
-            />
+            <Sphere key={i} index={i} z={Math.random() * -10 + 12} />
           ))}
         </group>
 
@@ -329,14 +346,14 @@ export default function WebGL({ render = true }) {
         alpha: true,
       }}
       dpr={[1, 2]}
-      frameloop='never'
+      // frameloop='never'
       shadows
       // orthographic
       camera={{ near: 0.1, far: 10000, position: [-15, 8, 18], fov: 35 }}
     >
       <fog attach='fog' args={['#171717', 20, 30]} />
       <color attach='background' args={['#171717']} />
-      <Raf render={render} />
+      {/* <Raf render={render} /> */}
       <Preload all />
       <Suspense>
         <Content />

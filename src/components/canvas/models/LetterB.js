@@ -10,7 +10,7 @@ const LetterB = React.forwardRef((props, ref) => {
   // Merged creates THREE.InstancedMeshes out of the meshes you feed it
   // All in all we end up with just 5 draw-calls for the entire scene
   return (
-    <group position={[-2, 0, 2]} ref={groupRef}>
+    <group ref={groupRef} {...props}>
       <mesh
         castShadow
         ref={ref}
@@ -18,7 +18,7 @@ const LetterB = React.forwardRef((props, ref) => {
         geometry={nodes.Vector_Smart_Object.geometry}
         material={materials.Material_0}
         rotation={[0, -Math.PI / 2.5, 0]}
-        position={[-5, 0, 0]}
+        position={[0, 0, 0]}
         material-reflectivity={0.62}
         material-roughness={0.74}
         material-clearcoat={0.24}

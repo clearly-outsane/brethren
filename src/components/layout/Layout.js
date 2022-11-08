@@ -12,7 +12,7 @@ export default function Layout({
   children,
   // eslint-disable-next-line unused-imports/no-unused-vars
   theme = 'light',
-  className,
+  className = '',
 }) {
   const [lenis, setLenis] = useBoundStore((state) => [
     state.lenis,

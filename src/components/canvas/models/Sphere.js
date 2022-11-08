@@ -9,11 +9,10 @@ export default function Sphere({ index, z }) {
   const meshRef = useRef();
   const { nodes, materials } = useGLTF('/models/LetterB.glb');
   const { viewport, camera } = useThree();
-  const { width, height } = viewport.getCurrentViewport(camera, [0, 0, -z]);
+
   const [speed] = useState(() => 0.1 + Math.random() / 10);
 
   const position = useMemo(() => {
-    const z = Math.random() * -10 + 12;
     const bounds = viewport.getCurrentViewport(camera, [0, 0, z]);
     return [
       THREE.MathUtils.randFloatSpread(bounds.width) * 0.9,

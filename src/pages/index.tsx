@@ -40,6 +40,7 @@ export default function HomePage() {
   const [section2Ref, section2] = useRect();
   const [section3Ref, section3] = useRect();
   const [section4Ref, section4] = useRect();
+  const [section5Ref, section5] = useRect();
 
   const WhatWeDoCard = ({
     title,
@@ -127,6 +128,11 @@ export default function HomePage() {
     addThreshold({ id: 'clients', value: top });
   }, [section4]);
 
+  React.useEffect(() => {
+    const top = section5.top;
+    addThreshold({ id: 'what-we-do', value: top });
+  }, [section5]);
+
   return (
     <Layout>
       {/* <Seo templateTitle='Home' /> */}
@@ -136,12 +142,12 @@ export default function HomePage() {
       </div>
       <main className='bg-black'>
         <section className='relative text-white'>
-          <div className='container mx-auto flex min-h-screen flex-col items-center justify-center px-5 lg:px-0'>
-            <h1 className='grid flex-1 place-items-center self-end text-center lg:max-w-[546px] lg:text-left'>
+          <div className='container mx-auto flex min-h-screen flex-col items-center justify-end px-5 lg:justify-center lg:px-0'>
+            <h1 className='mb-12 grid place-items-center text-center lg:mb-0 lg:max-w-[546px] lg:flex-1 lg:self-end lg:text-left'>
               We help you grow your business by creating an experience that
               people love.
             </h1>
-            <div className='absolute bottom-0 mb-10 flex flex-col items-center'>
+            <div className='bottom-0 mb-10 flex flex-col items-center lg:absolute'>
               <span className='mb-10'>Keep exploring</span>
               <BsArrowDown size={24} />
             </div>
@@ -238,7 +244,7 @@ export default function HomePage() {
         </section>
 
         <section className='relative text-white' ref={section4Ref}>
-          <div className='container mx-auto mt-32 mb-24 flex min-h-screen flex-col items-center px-5 lg:px-0'>
+          <div className='container mx-auto mt-32 flex min-h-screen flex-col items-center px-5 pb-24 lg:px-0'>
             <div className=' flex w-full items-stretch '>
               <div className=' lg:basis-1/2'>
                 <div className=' flex flex-col'>
@@ -302,6 +308,50 @@ export default function HomePage() {
                 <div className=' mt-16 hidden lg:block'>
                   <BsArrowDown size={24} />
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className='relative text-white' ref={section5Ref}>
+          <div className='container mx-auto mt-32 flex flex-col px-5 pb-24 lg:px-0'>
+            <div className='uppercase tracking-[0.2em]'>our services</div>
+            <h2 className='mt-2 text-center font-bold lg:mt-8 lg:text-left'>
+              Here&apos;s what we do, in plain english.
+            </h2>
+            <div className=' mt-24 hidden lg:flex'>
+              <div className='min-w-[216px] divide-y-[1px] divide-[rgba(255,255,255,0.08)] lg:pr-4 [&>*]:py-5'>
+                <div className='!pb-10 !pt-0 text-[14px] uppercase tracking-[0.2em]'>
+                  Brand
+                </div>
+                <div className=''>Naming</div>
+                <div className=''>Brand Design</div>
+                <div className=''>Brand Positioning</div>
+                <div className=''>Brand Governance</div>
+                <div className=''>Brand Collateral</div>
+                <div />
+              </div>
+              <div className='min-w-[216px] divide-y-[1px] divide-[rgba(255,255,255,0.08)] lg:pr-4 [&>*]:py-5'>
+                <div className='!pb-10 !pt-0 text-[14px] uppercase tracking-[0.2em]'>
+                  Experience Design
+                </div>
+                <div className=''>Responsive Web</div>
+                <div className=''>E-commerce</div>
+                <div className=''>App & Mobile</div>
+                <div className=''>Saas</div>
+                <div className=''>Digital Products</div>
+                <div />
+              </div>
+              <div className='min-w-[216px] divide-y-[1px] divide-[rgba(255,255,255,0.08)] lg:pr-4 [&>*]:py-5'>
+                <div className='!pb-10 !pt-0 text-[14px] uppercase tracking-[0.2em]'>
+                  Rich Media
+                </div>
+                <div className=''>Photography</div>
+                <div className=''>Motion Design</div>
+                <div className=''>Live Action Video</div>
+                <div className=''>3D Rendering</div>
+                <div className=''>Sound Design</div>
+                <div />
               </div>
             </div>
           </div>
